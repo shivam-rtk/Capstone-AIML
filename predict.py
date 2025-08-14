@@ -1,42 +1,12 @@
-#Load packages
-import pickle
-from flask import Flask, request, jsonify
-import pandas as pd
-
-# Load the trained model
-with open('lr_model.bin', 'rb') as f_in:
-    model = pickle.load(f_in)
-    
-#Feature preparation
-def prepare_features(ride):
-    return pd.DataFrame([{
-        'cylinders': ride['cylinders'],
-        'displacement': ride['displacement'],
-        'weight': ride['weight'],
-        'acceleration': ride['acceleration']
-    }])
-
-#Prediction
-def predict(features_df):
-    preds = gbr.predict(features_df)
-    return float(preds[0])
-
-#API call
-app = Flask('mpg_prediction')
+#test.py
+import requests
  
-@app.route('/predict', methods=['POST'])
-
-def predict_endpoint():
-    ride = request.get_json()
+ride = {
+    "cylinders": 0.4,
+    "displacement": 0.8,
+    "weight": 1,
+    "acceleration": 0.9
+}
  
-    features_df = prepare_features(ride)
-    pred = predict(features_df)
- 
-    result = {
-        'predicted_mpg': pred
-    }
- 
-    return jsonify(result)
- 
-if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0', port=9696)
+url = 'http://localhost:9696/predict'
+response = requests.post(url, json=ride)
