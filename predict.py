@@ -22,7 +22,7 @@ def predict(features_df):
     return float(preds[0])
 
 #API call
-app = Flask('MPG_Prediction')
+app = Flask('mpg_prediction')
  
 @app.route('/predict', methods=['POST'])
 
